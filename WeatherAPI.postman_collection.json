@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "a2fc3e35-d8c4-49bd-b2ab-d7550015c6de",
+		"name": "WeatherAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api.openweathermap.org/data/2.5/forecast?q=Sydney,au&units=metric&appid=a56ee507ab2a929573a2dc1b1f4daee5&temp_min=",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bdbe0f72-02b7-4645-9691-8d1aa6f7ca25",
+						"exec": [
+							"pm.environment.set(\"q\",\"Sydney,au\");\r",
+							"\r",
+							"pm.test(\"response is ok\",()=>{\r",
+							"    pm.response.to.be.ok;//enforce 200ish\r",
+							" \r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Forecast weaher is returned\",()=>{\r",
+							"    pm.expect(pm.response.text()).to.include(\"weather\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"The city is Sydney\",()=>{\r",
+							"    pm.expect(pm.response.text()).to.include(\"Sydney\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Thursday Wednesday is greater than 10 degreeC\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    var lists = json.list;\r",
+							"    \r",
+							"    //filter return value by date of the week and temperature\r",
+							"    var items = lists.filter(function(item){\r",
+							"        var date =new Date(item.dt_txt);\r",
+							"        \r",
+							"        //check Thursday and temp greater than 10\r",
+							"        return date.getDay()===4 && (+item.main.temp)>10;\r",
+							"      \r",
+							"});\r",
+							"\r",
+							"   pm.expect(items.length).to.not.equal(0);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "api.openweathermap.org/data/2.5/forecast?q=Sydney,au&units=metric&appid=a56ee507ab2a929573a2dc1b1f4daee5&temp_min=",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"forecast"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "Sydney,au"
+						},
+						{
+							"key": "units",
+							"value": "metric"
+						},
+						{
+							"key": "appid",
+							"value": "a56ee507ab2a929573a2dc1b1f4daee5"
+						},
+						{
+							"key": "temp_min",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
